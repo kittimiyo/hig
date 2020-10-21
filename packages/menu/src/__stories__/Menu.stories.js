@@ -17,6 +17,7 @@ storybook.add(
     propTablesExclude: [KnobbedThemeProvider]
   })(() =>
     renderStory({
+      onFocus: () => { console.log('focus') },
       checkmark: true,
       className: "a b",
       multiple: true,

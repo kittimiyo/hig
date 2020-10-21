@@ -37,73 +37,6 @@ export default class Menu extends Component {
     onMenuItemClicked: () => {}
   };
 
-  getMenuSections = items =>
-    items.every(item => Object.prototype.hasOwnProperty.call(item, "items"))
-      ? items
-      : [{ items }];
-
-  getFlattenedMenuItems = items =>
-    this.getMenuSections(items).reduce(
-      (previousValue, section) => [...previousValue, ...section.items],
-      []
-    );
-
-  getMenuItemIds = items =>
-    this.getFlattenedMenuItems(items).map(item => item.id);
-
-  renderMenuItem = (item, sectionProps) => {
-    const { selected, multiple } = this.props;
-    const checked =
-      multiple && Array.isArray(selected)
-        ? selected.includes(item.id)
-        : selected === item.id;
-
-    const payload = {
-      ...sectionProps,
-      ...item,
-      checked,
-      multiple,
-      checkmark: this.props.checkmark
-    };
-    return <MenuItem key={item.id} {...payload} />;
-  };
-
-  renderMenuSections = () => {
-    const {
-      items: menuItems,
-      variant: menuVariant,
-      stylesheet: customStylesheet,
-      ...otherProps
-    } = this.props;
-
-    const { className: menuClassName } = otherProps;
-    const sectionClassNameFromMenu = createCustomClassNames(
-      menuClassName,
-      "section"
-    );
-
-    return this.getMenuSections(menuItems).map((section, index) => {
-      const { label, variant, items, className } = section;
-
-      const payload = {
-        index,
-        label,
-        variant: variant || menuVariant,
-        stylesheet: customStylesheet,
-        className: cx(sectionClassNameFromMenu, className)
-      };
-
-      return (
-        <MenuSectionPresenter
-          key={label ? `${label}-${index}` : index}
-          {...payload}
-        >
-          {items.map(item => this.renderMenuItem(item, payload))}
-        </MenuSectionPresenter>
-      );
-    });
-  };
-
   render() {
     const { stylesheet: customStylesheet, ...otherProps } = this.props;
     const { className } = otherProps;
@@ -120,12 +53,75 @@ export default class Menu extends Component {
           );
 
           return (
-            <div className={cx(css(styles.wrapper), className)}>
-              {this.renderMenuSections()}
+            <div>
+              <div>
+                <div 
+                  {...otherProps}
+                  id="ss_elem_list"
+                  tabIndex="0"
+                  role="listbox"
+                  aria-labelledby="ss_elem"
+                >
+                  <ul role="group" aria-labelledby="cat1">
+                    <li role="presentation" id="cat1">
+                      Land
+                    </li>
+                    <li id="ss_elem_1" role="option">
+                      Cat
+                    </li>
+                    <li id="ss_elem_2" role="option">
+                      Dog
+                    </li>
+                    <li id="ss_elem_3" role="option">
+                      Tiger
+                    </li>
+                    <li id="ss_elem_4" role="option">
+                      Reindeer
+                    </li>
+                    <li id="ss_elem_5" role="option">
+                      Raccoon
+                    </li>
+                  </ul>
+                </div>
+              </div>
             </div>
           );
+
         }}
       </ThemeContext.Consumer>
     );
   }
 }
+
+
+
+/* 
+
+<ul role="group" aria-labelledby="cat2">
+                    <li role="presentation" id="cat2">
+                      Water
+                    </li>
+                    <li id="ss_elem_6" role="option">
+                      Dolphin
+                    </li>
+                    <li id="ss_elem_7" role="option">
+                      Flounder
+                    </li>
+                    <li id="ss_elem_8" role="option">
+                      Eel
+                    </li>
+                  </ul>
+                  <ul role="group" aria-labelledby="cat3">
+                    <li role="presentation" id="cat3">
+                      Air
+                    </li>
+                    <li id="ss_elem_9" role="option">
+                      Falcon
+                    </li>
+                    <li id="ss_elem_10" role="option">
+                      Winged Horse
+                    </li>
+                    <li id="ss_elem_11" role="option">
+                      Owl
+                    </li>
+                  </ul> */

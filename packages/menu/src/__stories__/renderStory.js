@@ -2,6 +2,7 @@ import React from "react";
 import KnobbedThemeProvider from "@hig/storybook/storybook-support/decorators/KnobbedThemeProvider";
 import Surface from "@hig/surface";
 import Menu from "../index";
+import { Option } from "../index";
 import getKnobs from "./getKnobs";
 
 export default function renderStory(props) {
@@ -11,7 +12,12 @@ export default function renderStory(props) {
     <KnobbedThemeProvider>
       <div style={{ width: "300px" }}>
         <Surface borderRadius="m" shadow="low">
-          <Menu {...otherProps}>{children}</Menu>
+          <Menu {...otherProps}>
+            <Option key="1">test 1</Option>
+            <Option key="2">test 2</Option>
+            <Option key="3">test 3</Option>
+            <Option key="4">test 4</Option>
+          </Menu>
         </Surface>
       </div>
     </KnobbedThemeProvider>

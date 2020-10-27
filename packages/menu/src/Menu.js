@@ -9,6 +9,7 @@ import stylesheet from "./stylesheet";
 import { variants, AVAILABLE_VARIANTS } from "./constants";
 import MenuBehavior from "./behaviors/MenuBehavior";
 import MenuPresenter from "./presenters/MenuPresenter";
+import { Option } from "./Option";
 // import { MenuItemsPropType } from "./propTypes";
 
 export default class Menu extends Component {
@@ -39,7 +40,7 @@ export default class Menu extends Component {
   };
 
   render() {
-    const { stylesheet: customStylesheet, ...otherProps } = this.props;
+    const { children, stylesheet: customStylesheet, ...otherProps } = this.props;
     const { className, onBlur, onFocus, onKeyDown, onKeyUp, onMouseDown, onMouseEnter, onMouseLeave, onMouseUp } = otherProps;
 
     return (
@@ -63,7 +64,9 @@ export default class Menu extends Component {
         }) => (
           <MenuBehavior onKeyDown={onKeyDown}>
             {({ handleKeyDown }) => (
-              <MenuPresenter onKeyDown={handleKeyDown} />
+              <MenuPresenter onKeyDown={handleKeyDown}>
+                {children}
+              </MenuPresenter>
             )}
           </MenuBehavior>
         )}

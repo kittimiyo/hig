@@ -28,8 +28,8 @@ export default class OptionPresenter extends Component {
     const {
       hasFocus,
       hasHover,
+      highlighted,
       isPressed,
-      index,
       label,
       variant,
       checkmark,
@@ -38,6 +38,9 @@ export default class OptionPresenter extends Component {
       ...otherProps
     } = this.props;
     const {
+      className,
+      id,
+      index,
       onBlur,
       onFocus,
       onMouseDown,
@@ -46,21 +49,12 @@ export default class OptionPresenter extends Component {
       onMouseUp
     } = otherProps;
 
-    const { className, id } = otherProps;
+    const defaultId = `menu-item-${index}`;
 
     return (
       <ThemeContext.Consumer>
         {({ resolvedRoles, metadata }) => {
-          /* const styles = stylesheet(
-            {
-              label,
-              variant,
-              checkmark,
-              stylesheet: customStylesheet
-            },
-            resolvedRoles,
-            metadata
-          ); */
+          const styles = stylesheet(this.props, resolvedRoles);
 
           /* if (index === 0) {
             styles.sectionWrapper.borderTop = "0";
@@ -71,7 +65,8 @@ export default class OptionPresenter extends Component {
             "section-label"
           );
           // console.log("hasFocus: ", hasFocus);
-          // console.log("hasHover: ", hasHover);
+          console.log("isPressed: ", isPressed);
+          console.log("highlighted: ", highlighted);
           // console.log("isPressed: ", isPressed);
 
           return (
@@ -79,7 +74,8 @@ export default class OptionPresenter extends Component {
               Land
             </li> */
             <li
-              id={id} 
+              className={css(styles.menuOption)}
+              id={id || defaultId} 
               role="option"
               onBlur={onBlur}
               onFocus={onFocus}

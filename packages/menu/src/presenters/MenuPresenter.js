@@ -12,13 +12,14 @@ import stylesheet from "../stylesheet";
  * @returns {OptionMeta[]}
  */
 function createOptions(children) {
-  return Children.toArray(children).reduce((result, child) => {
-    const { type, key, props = {} } = child;
-console.log(Option);
+  return Children.toArray(children).reduce((result, child, index) => {
+    const { type, key, props = {index} } = child;
+console.log('create options');
+console.log(children.length);
     if (type === Option) {
       result.push({ key, props });
-      console.log('is option');
     }
+
     return result;
   }, []);
 }
@@ -34,8 +35,6 @@ export default class MenuPresenter extends Component {
 
   /** @returns {TabMeta[]} */
   getOptions() {
-    console.log('getOptions');
-    console.log(this.props.children);
     return createOptions(this.props.children);
   }
 
@@ -45,8 +44,13 @@ export default class MenuPresenter extends Component {
    * @returns {JSX.Element}
    */
   renderOption = ({ key, props }, index) => {
-    // const { disabled, className: tabClassName } = props;
-    // const { variant, className: tabsClassName } = this.props;
+    // const { setActiveOption } = props;
+    const {
+      getHighlightIndex,
+      onKeyDown,
+      setActiveOption,
+      setHighlightIndex
+    } = this.props;
     /* const {
       hoveredTabIndex,
       effectiveAlign,
@@ -69,7 +73,13 @@ export default class MenuPresenter extends Component {
     ); */
 
     const payload = {
-      ...props/*,
+      ...props,
+      getHighlightIndex,
+      index,
+      onKeyDown,
+      setActiveOption,
+      setHighlightIndex
+      /*,
       key,
       variant,
       className,
@@ -78,7 +88,8 @@ export default class MenuPresenter extends Component {
       orientation: effectiveOrientation,
       active: activeTabIndex === index, */
     };
-
+//console.log(payload);
+// console.log(this.props);
     return <Option {...payload} />;
   };
 
@@ -109,7 +120,7 @@ export default class MenuPresenter extends Component {
       ...otherProps
     } = this.props;
 
-    const { className } = otherProps;
+    const { className, setActiveOption } = otherProps;
     return (
       <ThemeContext.Consumer>
         {({ resolvedRoles, metadata }) => {

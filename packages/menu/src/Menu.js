@@ -14,29 +14,11 @@ import { Option } from "./Option";
 
 export default class Menu extends Component {
   static propTypes = {
-    /** Width of the menu */
-    width: PropTypes.string,
-    /** Function to modify the component's styles */
-    stylesheet: PropTypes.func,
-    variant: PropTypes.oneOf(AVAILABLE_VARIANTS),
-    /** Items */
-    // items: MenuItemsPropType,
-    checkmark: PropTypes.bool,
-    multiple: PropTypes.bool,
-    selected: PropTypes.oneOfType([
-      PropTypes.any,
-      PropTypes.arrayOf(PropTypes.any)
-    ]),
-    onMenuItemClicked: PropTypes.func
+    
   };
 
   static defaultProps = {
-    width: "auto",
-    items: [],
-    variant: variants.BASIC,
-    checkmark: false,
-    multiple: false,
-    onMenuItemClicked: () => {}
+   
   };
 
   render() {
@@ -63,8 +45,13 @@ export default class Menu extends Component {
           onMouseUp: handleMouseUp
         }) => (
           <MenuBehavior onKeyDown={onKeyDown}>
-            {({ handleKeyDown }) => (
-              <MenuPresenter onKeyDown={handleKeyDown}>
+            {({ getHighlightIndex, handleKeyDown, setActiveOption, setHighlightIndex }) => (
+              <MenuPresenter
+                getHighlightIndex={getHighlightIndex}
+                onKeyDown={handleKeyDown}
+                setActiveOption={setActiveOption}
+                setHighlightIndex={setHighlightIndex}
+              >
                 {children}
               </MenuPresenter>
             )}

@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { css, cx } from "emotion";
-import { ControlBehavior } from "@hig/behaviors";
+import { PressedBehavior } from "@hig/behaviors";
 import { ThemeContext } from "@hig/theme-context";
 
+import OptionBehavior from "./behaviors/OptionBehavior";
 import OptionPresenter from "./presenters/OptionPresenter";
 // import { createCustomClassNames } from "@hig/utils";
 
@@ -15,71 +16,57 @@ import { variants, AVAILABLE_VARIANTS } from "./constants";
 
 export default class Option extends Component {
   static propTypes = {
-    /** Width of the menu */
-    width: PropTypes.string,
-    /** Function to modify the component's styles */
-    stylesheet: PropTypes.func,
-    // variant: PropTypes.oneOf(AVAILABLE_VARIANTS),
-    /** Items */
-    // items: MenuItemsPropType,
-    checkmark: PropTypes.bool,
-    multiple: PropTypes.bool,
-    selected: PropTypes.oneOfType([
-      PropTypes.any,
-      PropTypes.arrayOf(PropTypes.any)
-    ]),
-    onMenuItemClicked: PropTypes.func
+    
   };
 
   static defaultProps = {
-    width: "auto",
-    items: [],
-    variant: variants.BASIC,
-    checkmark: false,
-    multiple: false,
-    onMenuItemClicked: () => {}
+    
   };
+
+  componentDidMount() {
+    console.log('componentDidMount');
+    console.log(this.props);
+    if (this.props.setActiveOption) {
+      // this.props.setActiveOption(this.props.id);
+    }
+    if (this.props.setHighlightIndex) {
+      // this.props.setKeyboardHoverOptionIndex(this.props.id);
+    }
+  }
 
   render() {
     const { children, stylesheet: customStylesheet, ...otherProps } = this.props;
-    const { className, onBlur, onFocus, onKeyDown, onKeyUp, onMouseDown, onMouseEnter, onMouseLeave, onMouseUp } = otherProps;
+    const { className, id, index, getHighlightIndex, onMouseDown, onMouseUp } = otherProps;
+    console.log('option render');
+    console.log(getHighlightIndex(), index);
     return (
-      <ControlBehavior
-        onBlur={onBlur}
-        onFocus={onFocus}
+      <PressedBehavior
         onMouseDown={onMouseDown}
-        onMouseEnter={onMouseEnter}
-        onMouseLeave={onMouseLeave}
         onMouseUp={onMouseUp}
       >
         {({
-          hasFocus,
-          hasHover,
           isPressed,
-          onBlur: handleBlur,
-          onFocus: handleFocus,
           onMouseDown: handleMouseDown,
-          onMouseEnter: handleMouseEnter,
-          onMouseLeave: handleMouseLeave,
           onMouseUp: handleMouseUp
-        }) => {
-          return(
+        }) => (
+          <OptionBehavior {...otherProps}>{({
+            handleMouseEnter
+          }) => (
             <OptionPresenter
-              hasFocus={hasFocus}
-              hasHover={hasHover}
+              highlighted={getHighlightIndex() === index}
+              id={id}
+              index={index}
               isPressed={isPressed}
-              onBlur={handleBlur}
-              onFocus={handleFocus}
               onMouseDown={handleMouseDown}
               onMouseEnter={handleMouseEnter}
-              onMouseLeave={handleMouseLeave}
               onMouseUp={handleMouseUp}
             >
               {children}
             </OptionPresenter>
-          );
-        }}
-      </ControlBehavior>
+          )}
+          </OptionBehavior>
+        )}
+      </PressedBehavior>
     );
   }
 }

@@ -12,7 +12,7 @@ export default function renderStory(props) {
     <KnobbedThemeProvider>
       <div style={{ width: "300px" }}>
         <Surface borderRadius="m" shadow="low">
-          <Menu {...otherProps}>
+          <Menu {...otherProps} onKeyDown={() => {console.log('key down prop')}}>
             <Option key="1" id="1" onMouseEnter={() => {console.log('onenter')}}>test 1</Option>
             <Option key="2" id="2">test 2</Option>
             <Option key="3" id="3">test 3</Option>

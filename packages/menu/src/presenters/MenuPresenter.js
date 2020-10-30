@@ -14,8 +14,7 @@ import stylesheet from "../stylesheet";
 function createOptions(children) {
   return Children.toArray(children).reduce((result, child, index) => {
     const { type, key, props = {index} } = child;
-console.log('create options');
-console.log(children.length);
+
     if (type === Option) {
       result.push({ key, props });
     }
@@ -47,9 +46,12 @@ export default class MenuPresenter extends Component {
     // const { setActiveOption } = props;
     const {
       getHighlightIndex,
+      onBlur,
+      onFocus,
       onKeyDown,
       setActiveOption,
-      setHighlightIndex
+      setHighlightIndex,
+      setTotalOptions
     } = this.props;
     /* const {
       hoveredTabIndex,
@@ -76,9 +78,13 @@ export default class MenuPresenter extends Component {
       ...props,
       getHighlightIndex,
       index,
+      key,
+      onBlur,
+      onFocus,
       onKeyDown,
       setActiveOption,
-      setHighlightIndex
+      setHighlightIndex,
+      setTotalOptions
       /*,
       key,
       variant,
@@ -114,13 +120,26 @@ export default class MenuPresenter extends Component {
     );
   }
 
+  componentDidMount() {
+    console.log('menu presenter componentDidMount');
+    
+    this.props.setTotalOptions(this.props.children.length);
+  }
+
   render() {
     const {
       children,
       ...otherProps
     } = this.props;
 
-    const { className, setActiveOption } = otherProps;
+    const {
+      className,
+      // setActiveOption
+      onBlur,
+      onFocus,
+      onKeyDown
+    } = otherProps;
+
     return (
       <ThemeContext.Consumer>
         {({ resolvedRoles, metadata }) => {
@@ -148,11 +167,14 @@ export default class MenuPresenter extends Component {
           return (
             <div>
               <div 
-                {...otherProps}
-                id="ss_elem_list"
-                tabIndex="0"
-                role="listbox"
+                // {...otherProps}
                 aria-labelledby="ss_elem"
+                id="ss_elem_list"
+                onBlur={onBlur}
+                onFocus={onFocus}
+                onKeyDown={onKeyDown}
+                role="listbox"
+                tabIndex="0"
               >
                 {this.renderOptions()}
               </div>

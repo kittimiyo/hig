@@ -17,19 +17,18 @@ export default class MenuBehavior extends Component {
    * @type {State}
    */
   state = {
+    activeId: null,
     activeOption: null,
-    highlightIndex: null,
-    activeId: null
+    highlightIndex: 0,
+    totalOptions: null
   };
 
   setActiveOption = activeOption => {
     this.setState({ activeOption });
-    console.log(activeOption);
   }
 
   setHighlightIndex = highlightIndex => {
     this.setState({ highlightIndex });
-    console.log(highlightIndex);
   }
   /**
    * @returns {boolean}
@@ -38,26 +37,81 @@ export default class MenuBehavior extends Component {
     return this.state.highlightIndex;
   }
 
+  setTotalOptions = totalOptions => {
+    this.setState({ totalOptions });
+  }
+
+  getTotalOptions = () => {
+    return this.state.totalOptions;
+  }
+
+  handleFocus = event => {
+    if (this.props.onFocus) {
+      this.props.onFocus(event);
+    }
+
+    this.setHighlightIndex(0);
+  }
+
+  handleBlur = event => {
+    if (this.props.onBlur) {
+      this.props.onBlur(event);
+    }
+
+    this.setHighlightIndex(0);
+  }
+
   handleKeyDown = event => {
     console.log(event.keyCode);
     console.log(event.key);
-    event.preventDefault();
-
+    
+    if (this.props.onKeyDown) {
+      this.props.onKeyDown(event);
+    }
     // 38 up 40 down
-    if (event.keyCode === 13) {
-      this.setChecked(!event.target.checked);
+    switch (event.key) {
+      case `ArrowDown`:
+        if (this.getHighlightIndex() === this.getTotalOptions()) {
+          this.setHighlightIndex(1);
+        }
+        if (this.getHighlightIndex() !== this.getTotalOptions()) {
+          this.setHighlightIndex(Number(this.getHighlightIndex()) + 1);
+        }
+        event.preventDefault();
+        break;
+      case `ArrowUp`:
+        if (this.getHighlightIndex() <= 1) {
+          this.setHighlightIndex(this.getTotalOptions());
+        }
+        if (this.getHighlightIndex() > 1) {
+          this.setHighlightIndex(Number(this.getHighlightIndex()) - 1);
+        }
+        event.preventDefault();
+        break;
+      
     }
   }
 
   render() {
     console.log(this.state);
-    const { getHighlightIndex, handleKeyDown, setActiveOption, setHighlightIndex } = this;
+    const {
+      getHighlightIndex,
+      handleBlur,
+      handleFocus,
+      handleKeyDown,
+      setActiveOption,
+      setHighlightIndex,
+      setTotalOptions
+    } = this;
 
     return this.props.children({
       getHighlightIndex,
+      handleBlur,
+      handleFocus,
       handleKeyDown,
       setActiveOption,
-      setHighlightIndex
+      setHighlightIndex,
+      setTotalOptions
     });
   }
 }

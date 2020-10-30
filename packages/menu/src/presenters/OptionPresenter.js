@@ -65,8 +65,8 @@ export default class OptionPresenter extends Component {
             "section-label"
           );
           // console.log("hasFocus: ", hasFocus);
-          console.log("isPressed: ", isPressed);
-          console.log("highlighted: ", highlighted);
+          // console.log("isPressed: ", isPressed);
+          // console.log("highlighted: ", highlighted);
           // console.log("isPressed: ", isPressed);
 
           return (

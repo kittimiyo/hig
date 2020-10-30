@@ -45,18 +45,27 @@ export default class OptionBehavior extends Component {
       this.props.onMouseEnter(event);
     }
 
-    console.log('optionbehavior, handlemouseenter');
-    console.log(this.props);
     if (this.props.setHighlightIndex) {
-      this.props.setHighlightIndex(this.props.index);
+      this.props.setHighlightIndex(Number(this.props.index) + 1);
+    }
+  }
+
+  handleMouseLeave = event => {
+    if (this.props.onMouseLeave) {
+      this.props.onMouseLeave(event);
+    }
+
+    if (this.props.setHighlightIndex) {
+      this.props.setHighlightIndex(0);
     }
   }
 
   render() {
-    const { handleMouseEnter } = this;
+    const { handleMouseEnter, handleMouseLeave } = this;
 
     return this.props.children({
-      handleMouseEnter
+      handleMouseEnter,
+      handleMouseLeave
     });
   }
 }

@@ -37,8 +37,8 @@ export default class Option extends Component {
   render() {
     const { children, stylesheet: customStylesheet, ...otherProps } = this.props;
     const { className, id, index, getHighlightIndex, onMouseDown, onMouseUp } = otherProps;
-    console.log('option render');
-    console.log(getHighlightIndex(), index);
+    const offsetIndex = Number(index) + 1;
+
     return (
       <PressedBehavior
         onMouseDown={onMouseDown}
@@ -50,15 +50,17 @@ export default class Option extends Component {
           onMouseUp: handleMouseUp
         }) => (
           <OptionBehavior {...otherProps}>{({
-            handleMouseEnter
+            handleMouseEnter,
+            handleMouseLeave
           }) => (
             <OptionPresenter
-              highlighted={getHighlightIndex() === index}
+              highlighted={getHighlightIndex() === offsetIndex}
               id={id}
               index={index}
               isPressed={isPressed}
               onMouseDown={handleMouseDown}
               onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
               onMouseUp={handleMouseUp}
             >
               {children}

@@ -165,19 +165,17 @@ export default class MenuPresenter extends Component {
           const hasSubMenu = items && items.length > 0; */
 
           return (
-            <div>
-              <div 
-                // {...otherProps}
-                aria-labelledby="ss_elem"
-                id="ss_elem_list"
-                onBlur={onBlur}
-                onFocus={onFocus}
-                onKeyDown={onKeyDown}
-                role="listbox"
-                tabIndex="0"
-              >
-                {this.renderOptions()}
-              </div>
+            <div 
+              // {...otherProps}
+              aria-labelledby="ss_elem"
+              id="ss_elem_list"
+              onBlur={onBlur}
+              onFocus={onFocus}
+              onKeyDown={onKeyDown}
+              role="listbox"
+              tabIndex="0"
+            >
+              {this.renderOptions()}
             </div>
           );
         }}

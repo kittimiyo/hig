@@ -74,6 +74,7 @@ export default class OptionPresenter extends Component {
               Land
             </li> */
             <li
+              aria-selected="false"
               className={css(styles.menuOption)}
               id={id || defaultId} 
               role="option"
